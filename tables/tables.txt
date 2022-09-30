@@ -1,0 +1,76 @@
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| sys                |
+| worksb101          |
++--------------------+
+5 rows in set (0.18 sec)
+
+mysql> create database monitoringSystem
+    -> ;
+Query OK, 1 row affected (0.04 sec)
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| monitoringsystem   |
+| mysql              |
+| performance_schema |
+| sys                |
+| worksb101          |
++--------------------+
+6 rows in set (0.00 sec)
+
+mysql> use monitoringsystem;
+Database changed
+mysql> create table Admin(username varchar(20),password varchar(15));
+Query OK, 0 rows affected (0.54 sec)
+
+mysql> create table faculty(facultyid int primary key, ^C
+mysql> create table faculty(facultyid int primary key, facultyname varchar(20), facultyaddress varchar(20),mobile varchar(10), email varchar(25),username varchar(20),password(15));
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(15))' at line 1
+mysql> create table faculty(facultyid int primary key, facultyname varchar(20), facultyaddress varchar(20),mobile varchar(10), email varchar(25),username varchar(20),password varchar(15));
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> create table course(courseid int primary key,coursename varchar(25),fee int,courceDescription varchar(25));
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> create table batch(batchid int primary key,foreign key(courseid) references course(courseid),FOREIGN KEY (facultyid) REFERENCES faculty(facultyid));
+ERROR 1072 (42000): Key column 'courseid' doesn't exist in table
+mysql> create table batch(batchid int primary key,courseid int,facultyid int,numberofstudents int,batchstartdate date,duration varchar(15),foreign key(courseid) references course(courseid),FOREIGN KEY (facultyid) REFERENCES faculty(facultyid));
+Query OK, 0 rows affected (0.13 sec)
+
+mysql> desc batch;
++------------------+-------------+------+-----+---------+-------+
+| Field            | Type        | Null | Key | Default | Extra |
++------------------+-------------+------+-----+---------+-------+
+| batchid          | int         | NO   | PRI | NULL    |       |
+| courseid         | int         | YES  | MUL | NULL    |       |
+| facultyid        | int         | YES  | MUL | NULL    |       |
+| numberofstudents | int         | YES  |     | NULL    |       |
+| batchstartdate   | date        | YES  |     | NULL    |       |
+| duration         | varchar(15) | YES  |     | NULL    |       |
++------------------+-------------+------+-----+---------+-------+
+6 rows in set (0.16 sec)
+
+mysql> create table coursePlan(planid int primary key,batchid int,daynumber int,topic varchar(20),status varchar(10),foreign key (batchid) references batch(batchid));
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> desc courseplan
+    -> ;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| planid    | int         | NO   | PRI | NULL    |       |
+| batchid   | int         | YES  | MUL | NULL    |       |
+| daynumber | int         | YES  |     | NULL    |       |
+| topic     | varchar(20) | YES  |     | NULL    |       |
+| status    | varchar(10) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
